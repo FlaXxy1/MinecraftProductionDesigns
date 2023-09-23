@@ -25,3 +25,8 @@ When you have 2 secondary outputs, it's sometimes better to have 2 same machines
 - drawers with voiding upgrades for items
 - drum + trashcan for fluids
 - when inserting, use secondary channel
+
+# Input Buffer
+
+When using EnderIo Itemconduits to insert into machines, the Items need to be pulled out of the system into an InputBuffer.
+This can be either an ME Interface or a Drawer with ME Export Busses attached.
