@@ -17,6 +17,7 @@ When you have 2 secondary outputs, it's sometimes better to have 2 same machines
 - are connected to ME as high prio storage (insert and extract)
 - drawers for items
 - drums for fluids
+- enderio inputs from code blue
 
 # Secondary Storage
 
@@ -25,6 +26,7 @@ When you have 2 secondary outputs, it's sometimes better to have 2 same machines
 - drawers with voiding upgrades for items
 - drum + trashcan for fluids
 - when inserting, use secondary channel
+- enderio inputs from code red
 
 # Input Buffer
 
