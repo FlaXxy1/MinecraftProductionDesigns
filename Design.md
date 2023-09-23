@@ -1,5 +1,9 @@
 # Design
 
+An extra ME Network is needed for production. Not connected to the main one.
+
+Some Storages of the Production Network are also attached to the Main Network. (putget or getonly)
+
 ## Stack sides
 
 - one axis for stacking machines (2 sides)
@@ -10,26 +14,35 @@
 ## Needed Buffers
 
 - Item Input Buffer 
-    - for all enderio item inputs
+    - for all enderio item inputs to machines
     - a drawerwall (no controller needed)
-    - exportbus into the drawer
+    - exportbus From the production network into each drawer
     - enderio out of the drawer
+    - optionally attach it as readonly storage to the main network.
+
+- External Input Item Buffer
+    - a drawerwall with controller
+    - storagebus the controller from Production network (get; high prio)
+    - manual insertion of items in here
 
 - Primary Item Storage
     - drawerWall with controller
     - itemconduit into the controller (code blue)
-    - storagebus the controller (put and get; high prio)
+    - storagebus the controller from Production network (put and get; high prio)
+    - attach it as putget storage to the main network.
 
 - Secondary Item Storage
     - drawerWall with controller
     - itemconduit into the controller (code red)
-    - storagebus the controller (only get; low prio)
+    - storagebus the controller from Production network (only get; low prio)
     - all drawers have void upgrade
+    - optionally attach it as readonly storage to the main network.
 
 - Primary Fluid Storage
     - Drums
     - fluidconduit on each (code blue)
-    - fluid storage bus on each (put and get; high prio)
+    - fluid storage bus from Production network on each (put and get; high prio)
+    - attach it as putget storage to the main network.
 
 - Secondary Fluid Storage
     - Drums
@@ -37,10 +50,22 @@
     - fluid storage bus on each (get only; low prio)
     - some trashcans 
         - with fluid conduit (code red; low prio; filtered)
+    - attach it as readonly storage to the main network.
 
-# Fluid Input
+## Rules:
+
+- don't use import busses
+- pipe out secondaries with enderio to secondary buffers
+- use enderio itemconduit via input buffer, when having multiple inputs or when the item comes from the main network 
+- fluid input with ME FluidInterfaces + pump (or FluidExportBus, if you dont have an fluid output) (so we don't need input buffers)
+- reuse the FluidInterface for primary fluid output.
+
+# Reasoning
+
+## Fluid Input
 
 - We need to use storage bus + interface or export bus, so that we can prioritize Secondary over Primary Storage.
+- If we use Enderio conduits for input, we need an input buffer. (as the source still needs to be the ME Network)
 - We use Fluid Input with interfaces with pumps.
 
 
@@ -48,7 +73,8 @@
 
 - We need to use storage bus + interface or export bus, so that we can prioritize Secondary over Primary Storage.
 - When there are multiple inputs, need to use export to input buffer + enderio itemconduits.
-- When there is a single item, we could theoretically use Export bus or Interface, but if the item is already in the input buffer (or will be there in the future), we can reuse it and use an EnderIO Conduit.
+- When there is a single item, we could theoretically use Export bus or Interface
+    - but if the item is already in the input buffer (or will be there in the future), we can reuse it and use an EnderIO Conduit.
 
 # Fluid Output
 
@@ -79,14 +105,6 @@ Fluid Output: None, P(rimary), S(econdary), PS
 | Multiple   | Some        | PS          | PS           | (Worst case) |
 
 
-
-## Rules:
-
-- don't use import busses
-- pipe out secondaries with enderio to secondary buffers
-- item inputs via input buffer and enderio cables
-- fluid input with ME FluidInterfaces (or FluidExportBus, if you dont have an fluid output) (so we don't need input buffers)
-- reuse the FluidInterface for primary fluid output.
 
 ## Worst case
 
